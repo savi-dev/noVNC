@@ -85,23 +85,13 @@
         }
 
         window.onload = function () {
-            var host, port, password, path, token;
-
+            var host, port, password, token;
             $D('sendCtrlAltDelButton').style.display = "inline";
             $D('sendCtrlAltDelButton').onclick = sendCtrlAltDel;
 
-            document.title = unescape(WebUtil.getQueryVar('title', 'noVNC'));
-            // By default, use the host and port of server that served this file
-            host = WebUtil.getQueryVar('host', window.location.hostname);
-            port = WebUtil.getQueryVar('port', window.location.port);
-
-            // If a token variable is passed in, set the parameter in a cookie.
-            // This is used by nova-novncproxy.
+            host = WebUtil.getQueryVar('host', null);
+            port = WebUtil.getQueryVar('port', null);
             token = WebUtil.getQueryVar('token', null);
-            if (token) {
-                WebUtil.createCookie('token', token, 1)
-            }
-
             password = WebUtil.getQueryVar('password', '');
             path = WebUtil.getQueryVar('path', 'websockify');
 
@@ -118,10 +108,8 @@
                            'true_color':   WebUtil.getQueryVar('true_color', true),
                            'local_cursor': WebUtil.getQueryVar('cursor', true),
                            'shared':       WebUtil.getQueryVar('shared', true),
-                           'view_only':    WebUtil.getQueryVar('view_only', false),
-                           'updateState':  updateState,
-                           'onPasswordRequired':  passwordRequired});
-            rfb.connect(host, port, password, path);
+                           'updateState':  updateState});
+            rfb.connect(host, port, password, token);
         };
         </script>
 
